@@ -3,6 +3,15 @@
 
 ## 1. Purpose of This Document
 
+The purpose of this document is to provide a bird’s-eye view of the overall architecture and design of this repository. It is intended to help the reader understand how the different components of the system fit together, without diving into implementation-level details.
+
+The document begins by presenting the end-to-end flow of data through the system, followed by a clear definition of the architectural boundaries within which the model is designed to operate. It then explains the input representation and tokenization pipeline, describing how raw text is handled, the tokenization strategies employed, and the mapping from token IDs to embedding representations.
+
+Next, the document outlines the core model architecture, covering the self-attention mechanism, causal masking, multi-head attention, and the composition of transformer blocks. This is followed by an explanation of the GPT model assembly, showing how the full model is constructed from stacked transformer blocks and how output projections are produced.
+
+The later sections describe the training and fine-tuning architecture, the text generation process, and the evaluation framework used to assess model performance. Finally, the document discusses artifacts, system state, design decisions, and trade-offs, providing context on the constraints and intentional choices made during development.
+
+
 
 ---
 
