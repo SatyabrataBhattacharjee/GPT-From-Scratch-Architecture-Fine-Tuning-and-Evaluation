@@ -21,6 +21,13 @@ The later sections describe the training and fine-tuning architecture, the text 
 
 
 ### 2.2 Architectural Boundaries
+The architecture is intentionally designed with clear boundaries to separate concerns and maintain conceptual simplicity.
+
+The system focuses on model architecture, training pipelines, fine-tuning workflows, and evaluation mechanisms for GPT-style language models. Responsibilities such as large-scale distributed training, model serving infrastructure, and production deployment are considered out of scope for this repository.
+
+Data handling is limited to local, reproducible workflows, with explicit separation between raw and processed datasets. Model artifacts, including pretrained weights and fine-tuned checkpoints, are managed as external state and are excluded from version control.
+
+By constraining the scope in this way, the architecture prioritizes clarity, reproducibility, and understanding of LLM internals, while leaving infrastructure-heavy concerns to downstream systems or production environments.
 
 
 ---
