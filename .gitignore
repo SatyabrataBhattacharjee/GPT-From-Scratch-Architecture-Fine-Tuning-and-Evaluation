@@ -1,3 +1,70 @@
+# ===============================
+# Data & training artifacts
+# ===============================
+data/
+datasets/
+models/
+checkpoints/
+outputs/
+runs/
+
+# ===============================
+# Model weights & checkpoints
+# ===============================
+*.pth
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+
+# ===============================
+# Experiment logs
+# ===============================
+wandb/
+mlruns/
+tensorboard/
+
+# ===============================
+# Jupyter & notebooks
+# ===============================
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# ===============================
+# Python cache
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+
+# ===============================
+# Environment & secrets
+# ===============================
+.env
+.env.*
+*.key
+*.pem
+
+# ===============================
+# OS / editor junk
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Temporary files
+# ===============================
+*.log
+*.tmp
+*.swp
+
+
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
