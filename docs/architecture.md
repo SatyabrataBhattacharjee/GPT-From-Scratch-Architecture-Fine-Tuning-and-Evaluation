@@ -64,11 +64,43 @@ Token IDs are converted into dense vector representations using a learned embedd
 
 ### 4.1 Self-Attention Mechanism
 
+Self-attention is the core operation that allows the model to contextualize each token in a sequence by relating it to all other tokens. Instead of processing tokens independently or sequentially, self-attention enables the model to dynamically determine which tokens are most relevant when forming a representation for a given position.
+
+In this architecture, self-attention is implemented by projecting the input embeddings into three separate representations: queries, keys, and values. Each token embedding is linearly transformed into these three spaces using learned projection matrices. The query representation determines what a token is looking for, while the key representations determine what information each token offers. The value representations contain the actual information that may be aggregated.
+
+Attention scores are computed by taking the dot product between query and key representations, producing a similarity measure between tokens. These scores are scaled by the square root of the key dimension to stabilize gradients and then normalized using a softmax function, yielding attention weights that sum to one across the sequence.
+
+The final context representation for each token is obtained by taking a weighted sum of the value vectors, where the weights are given by the attention distribution. As a result, each token’s representation becomes a context-aware mixture of other tokens in the sequence, allowing the model to capture dependencies such as syntax, semantics, and long-range relationships.
+
+Self-attention operates on the entire sequence simultaneously, making it highly parallelizable and well-suited for modeling complex interactions in language. However, in its raw form, self-attention does not enforce any notion of temporal order or causality; these constraints are introduced separately through positional embeddings and causal masking in later components of the architecture.
+
 
 ### 4.2 Causal Masking
 
+Causal attention is a constrained form of self-attention designed for autoregressive language modeling. Its purpose is to ensure that, when predicting a token at a given position, the model can only attend to tokens that occur earlier in the sequence, and never to future tokens.
+
+In this architecture, causal attention builds on standard self-attention by introducing an explicit causal mask. As in regular self-attention, the input embeddings are projected into query, key, and value representations using learned linear transformations. Attention scores are computed as similarities between queries and keys across the sequence.
+
+Before normalization, a causal mask is applied to the attention scores. This mask blocks all positions corresponding to future tokens by assigning them a negative infinity value, effectively forcing their attention weights to zero after the softmax operation. As a result, each token can only attend to itself and to tokens that precede it in the sequence.
+
+This masking mechanism enforces the autoregressive constraint required for language modeling, preventing information leakage from future tokens during both training and inference. Importantly, the mask is applied dynamically based on the actual sequence length, allowing the model to handle variable-length inputs while respecting a fixed maximum context window.
+
+After masking and normalization, dropout is applied to the attention weights as a form of regularization. The final context representation for each token is computed as a weighted sum of the value vectors, using the masked attention distribution.
+
+Causal attention enables the model to learn sequential dependencies while remaining fully parallelizable during training, making it a foundational component of GPT-style architectures.
+
 
 ### 4.3 Multi-Head Attention
+
+Multi-head attention extends single-head self-attention by allowing the model to attend to information from multiple representation subspaces simultaneously. Instead of computing a single attention distribution over the entire embedding space, the input is projected into multiple parallel attention heads, each operating on a lower-dimensional subspace.
+
+In this architecture, the input embeddings are first projected into query, key, and value representations using learned linear transformations. The resulting vectors are then reshaped to introduce an explicit head dimension, effectively splitting the embedding space into multiple attention heads. Each head independently computes scaled dot-product attention over the sequence while sharing the same causal masking mechanism.
+
+For each head, attention scores are computed between queries and keys, masked to prevent access to future tokens, scaled for numerical stability, and normalized using a softmax function. Dropout is applied to the attention weights to improve generalization. The weighted sum of value vectors produces a context representation for each head.
+
+After attention is computed independently across all heads, the resulting context vectors are concatenated back into a single representation. A final linear projection is applied to combine information from all heads and map the output back into the model’s embedding dimension.
+
+By attending to different aspects of the sequence in parallel, multi-head attention allows the model to capture diverse relationships such as short-range dependencies, long-range context, and syntactic or semantic patterns. This mechanism significantly increases the expressive power of the model without sacrificing parallelism, making it a central component of GPT-style transformer architectures.
 
 
 ### 4.4 Transformer Block Composition
