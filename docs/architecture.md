@@ -51,9 +51,12 @@ Raw text is processed outside the model using a Byte Pair Encoding (BPE) tokeniz
 
 ### 3.2 Tokenization Strategy
 
+The system uses a GPT-2 compatible Byte Pair Encoding (BPE) tokenizer implemented via tiktoken. Raw text is converted into sequences of subword token IDs prior to model execution. Tokenization is performed externally to the model, allowing the GPT architecture to operate purely on numerical token representations and enabling reuse across training, fine-tuning, and inference pipelines.
+
 
 ### 3.3 Token IDs to Embeddings
 
+Token IDs are converted into dense vector representations using a learned embedding layer. To encode sequence order, learned positional embeddings are added to the token embeddings. The combined embeddings are regularized with dropout before being passed into the transformer stack.
 
 ---
 
