@@ -122,9 +122,24 @@ The output of a transformer block has the same dimensionality as its input, enab
 
 ### 5.1 Stacking Transformer Blocks
 
+The GPT model is constructed by sequentially stacking a fixed number of structurally identical transformer blocks, where each block operates on the complete sequence representation produced by the previous layer. All transformer blocks share the same architectural configuration—embedding dimensionality, attention structure, and feed-forward layout—but maintain independent learned parameters.
+
+Each block receives an input tensor of shape [batch_size, sequence_length, embedding_dimension] and produces an output tensor of the same shape, ensuring dimensional consistency throughout the network. This design allows blocks to be composed in depth without requiring intermediate projection layers or shape transformations.
+
+Within each block, contextualization is progressively refined through causal multi-head self-attention and position-wise feed-forward transformations, with residual connections and normalization ensuring stable gradient propagation as depth increases. As a result, deeper layers are able to model increasingly abstract and long-range dependencies while preserving token-level alignment across the sequence.
+
+By stacking transformer blocks in this manner, the GPT architecture increases representational capacity and expressive power purely through depth, while maintaining a uniform computational interface between layers. This structural simplicity enables efficient implementation, straightforward scaling, and compatibility with pretrained weight initialization across model sizes.
+
 
 ### 5.2 Output Projection
 
+After the sequence representations have been refined through the stacked transformer blocks, the model applies a final layer normalization to stabilize the distribution of activations across the embedding dimension. The normalized hidden states, each corresponding to a token position in the sequence, are then passed through a linear output projection layer that maps vectors from the model’s embedding space into the vocabulary space.
+
+This output projection consists of a learned weight matrix of shape [embedding_dimension, vocabulary_size] and produces a tensor of logits with shape [batch_size, sequence_length, vocabulary_size]. Each logit represents an unnormalized score indicating the model’s confidence that a particular vocabulary token should occur next at a given sequence position.
+
+Importantly, this projection is applied independently at every timestep, enabling the model to produce next-token predictions for all positions in parallel during training. During autoregressive inference, only the logits corresponding to the final timestep are consumed by the decoding procedure.
+
+By separating the output projection from downstream decoding logic, the architecture cleanly decouples representation learning from decision-making policies such as greedy decoding, temperature scaling, or top-k sampling. This design allows the same projected logits to be reused across training, fine-tuning, and inference pipelines while maintaining a consistent interface between the model core and generation mechanisms.
 
 ---
 
