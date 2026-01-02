@@ -105,6 +105,16 @@ By attending to different aspects of the sequence in parallel, multi-head attent
 
 ### 4.4 Transformer Block Composition
 
+A transformer block serves as the fundamental building unit of the GPT architecture, combining attention-based context modeling with position-wise non-linear transformations. Each block is designed to incrementally refine token representations while preserving stability during deep stacking.
+
+In this architecture, each transformer block consists of two primary subcomponents: a multi-head causal self-attention layer and a feed-forward network. The self-attention layer enables tokens to integrate contextual information from earlier positions in the sequence, while the feed-forward network applies non-linear transformations independently to each token position.
+
+To ensure stable optimization and effective gradient flow, residual (shortcut) connections are applied around both the attention sublayer and the feed-forward sublayer. These shortcuts allow the block to learn incremental refinements to the input representation rather than entirely new transformations at each layer.
+
+Layer normalization is applied to regulate the scale of activations and improve training stability. By normalizing intermediate representations within each block, the model remains robust as depth increases. Dropout is applied at strategic points within the block to reduce overfitting and encourage generalization.
+
+The output of a transformer block has the same dimensionality as its input, enabling multiple blocks to be stacked sequentially without additional projection layers. Through repeated application of these blocks, the model progressively builds rich, hierarchical representations of the input sequence, capturing increasingly abstract patterns and long-range dependencies.
+
 
 ---
 
