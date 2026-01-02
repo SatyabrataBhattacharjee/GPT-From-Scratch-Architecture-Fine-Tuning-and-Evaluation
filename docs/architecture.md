@@ -19,6 +19,16 @@ The later sections describe the training and fine-tuning architecture, the text 
 
 ### 2.1 End-to-End Flow
 
+At a high level, the system defines an end-to-end flow that transforms raw text inputs into token-level predictions and task-specific outputs using a GPT-style autoregressive transformer architecture.
+
+The flow begins with raw text, which is converted into discrete token identifiers through the tokenization pipeline. These token IDs are mapped to dense vector representations using a learned token embedding layer, and positional information is added through a positional embedding layer to encode sequence order. A dropout operation is applied to the combined embeddings to improve training stability and regularization.
+
+The embedded sequence is then passed through a stack of transformer blocks. Each transformer block applies multi-head self-attention with causal masking to ensure that each token attends only to previous tokens in the sequence, followed by a position-wise feed-forward network. Layer normalization, residual (shortcut) connections, and dropout are used throughout the block to stabilize optimization and preserve gradient flow as depth increases.
+
+After processing through all transformer blocks, the model produces a sequence of contextualized hidden representations. These representations are projected into vocabulary-sized logits, yielding a probability distribution over the next token at each timestep.
+
+Depending on the operational mode, these outputs are used in different ways: during training or fine-tuning, the logits are evaluated against target tokens to compute loss and update model parameters; during inference, the logits are decoded autoregressively to generate text. Throughout this flow, the system produces artifacts such as model checkpoints and evaluation outputs, which are managed externally as part of the model lifecycle.
+
 
 ### 2.2 Architectural Boundaries
 The architecture is intentionally designed with clear boundaries to separate concerns and maintain conceptual simplicity.
@@ -35,6 +45,8 @@ By constraining the scope in this way, the architecture prioritizes clarity, rep
 ## 3. Input Representation & Tokenization
 
 ### 3.1 Raw Text Handling
+
+Raw text is processed outside the model using a Byte Pair Encoding (BPE) tokenizer. The tokenizer converts text into token IDs, which are then passed to the GPT model. The model itself operates purely on numerical token representations and produces token-level outputs, which are decoded back into text using the same tokenizer.
 
 
 ### 3.2 Tokenization Strategy
