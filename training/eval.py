@@ -14,3 +14,12 @@ def calc_loss_loader(loader, model, device, num_batches=None):
 
     model.train()
     return total / n
+from training.metrics import perplexity
+
+def evaluate_model(loader, model, device, num_batches=None):
+    """
+    Computes loss and perplexity for a given dataset.
+    """
+    loss = calc_loss_loader(loader, model, device, num_batches)
+    ppl = perplexity(loss)
+    return loss, ppl
