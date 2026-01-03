@@ -1,1 +1,21 @@
+# Core deep learning
+torch>=2.0.0
+
+# Tokenization (GPT-2 BPE)
+tiktoken>=0.5.0
+
+# Numerical utilities
+numpy>=1.23
+
+# Progress bars
+tqdm>=4.64
+
+# Configuration files
+pyyaml>=6.0
+
+# Downloading OpenAI GPT-2 weights
+requests>=2.28
+
+# Optional: visualization during training/evaluation
+matplotlib>=3.6
 
