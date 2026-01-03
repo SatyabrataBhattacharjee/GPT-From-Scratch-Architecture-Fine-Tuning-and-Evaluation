@@ -1,3 +1,4 @@
+import os
 import torch
 
 from data.download_data import load_raw_text
@@ -6,6 +7,10 @@ from tokenization.tokenizer import get_tokenizer
 from config.model_config import GPT_CONFIG_124M
 from models.gpt_model import GPTModel
 from training.train import train_model_simple
+
+
+CHECKPOINT_DIR = "models/checkpoints"
+CHECKPOINT_PATH = os.path.join(CHECKPOINT_DIR, "gpt_pretrained.pth")
 
 
 def main():
@@ -64,6 +69,12 @@ def main():
         start_context="Every effort moves you",
         tokenizer=tokenizer
     )
+
+    # 8. Save trained model (CRITICAL STEP)
+    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+    torch.save(model.state_dict(), CHECKPOINT_PATH)
+
+    print(f"\n✅ Model checkpoint saved at: {CHECKPOINT_PATH}")
 
 
 if __name__ == "__main__":
