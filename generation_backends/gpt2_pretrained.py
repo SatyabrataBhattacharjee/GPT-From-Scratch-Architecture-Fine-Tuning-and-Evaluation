@@ -4,7 +4,7 @@ from models.gpt_model import GPTModel
 from generation.generate import generate_text_simple
 from generation.utils import text_to_token_ids, token_ids_to_text
 from tokenization.tokenizer import get_tokenizer
-from utils.model_helpers import load_weights_into_gpt  # already exists in your repo
+from utils.model_helpers import load_weights_into_gpt  
 
 
 class GPT2PretrainedBackend:
