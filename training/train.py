@@ -18,9 +18,18 @@ def train_model_simple(
             optimizer.step()
 
             if step % eval_freq == 0:
-                train_loss = calc_loss_loader(train_loader, model, device, eval_iter)
-                val_loss = calc_loss_loader(val_loader, model, device, eval_iter)
-                print(f"Epoch {epoch+1} Step {step}: Train {train_loss:.3f}, Val {val_loss:.3f}")
+                train_loss, train_ppl = evaluate_model(
+                    train_loader, model, device, eval_iter
+                )
+                val_loss, val_ppl = evaluate_model(
+                    val_loader, model, device, eval_iter
+                )
+
+                print(
+                    f"Epoch {epoch+1} Step {step} | "
+                    f"Train loss {train_loss:.3f}, ppl {train_ppl:.2f} | "
+                    f"Val loss {val_loss:.3f}, ppl {val_ppl:.2f}"
+                )
 
             step += 1
 
