@@ -263,6 +263,6 @@ Execution diverges based on `--source`.
 - Pretrained assets are immutable  
 - Same GPT architecture reused across all weight sources  
 
-This repository is intentionally **transparent, interview-safe, and execution-order explicit**.
+This repository is intentionally **transparent and execution-order explicit**.
 
 
