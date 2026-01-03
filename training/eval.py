@@ -22,4 +22,4 @@ def evaluate_model(loader, model, device, num_batches=None):
     """
     loss = calc_loss_loader(loader, model, device, num_batches)
     ppl = perplexity(loss)
-    return loss, ppl
+    return loss, ppl 
